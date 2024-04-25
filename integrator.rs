@@ -1,20 +1,27 @@
 //! Numerically calculate integrals.
 //! 
-//! Call `int!(integrand; [bounds list;])`.
-//! Each bounds is formatted as
-//! low_bound, high_bound, x, dx (,n)?;
+//! e.g. 
 //! 
-//! Where (,n)? is optionally the resolution ",n" or blank (default n=100)
+//! ```rust
+//! #use std::f64::consts::*;
+//! 
+//! let result = int!(
+//!     // integrand
+//!     r;
+//!     // integration bounds in the format
+//!     // low_bound <expr>, high_bound <expr>, x <var>, dx <var> ,n <expr, optional>);
+//!     // where (, n) is an optionally-specified resolution (default is 100)
+//!     0.0, PI, t, dt, 1000;
+//!     0.0, 2.0 * f64::sin(t), r, dr;
+//!     0.0, f64::sqrt(4.0 - r * r), z, dz
+//! );
+//! ```
 
 fn main() {
-    use std::f64::consts::PI;
+    use std::f64::consts::*;
 
     let result = int!(
-        // integrand
         r;
-        // integration bounds in the format
-        // low_bound <expr>, high_bound <expr>, x <var>, dx <var> (, n <expr>);
-        // where (, n) is an optionally-specified resolution (default is 100)
         0.0, PI, t, dt;
         0.0, 2.0 * f64::sin(t), r, dr;
         0.0, f64::sqrt(4.0 - r * r), z, dz
@@ -24,7 +31,7 @@ fn main() {
 }
 
 
-struct BoundIter {
+pub struct BoundIter {
     lo: f64,
     dx: f64,
     n: usize,
